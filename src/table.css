@@ -1,0 +1,28 @@
+table {
+  border-radius: 16px;
+  border: 2px solid #ffffff;
+}
+
+.planet-table {
+  width: 100%;
+  border-collapse: collapse;
+  padding: 15px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  text-align: center;
+}
+
+.planet-table thead {
+  background-color: #164BAF;
+  color: #ffffff;
+}
+
+.planet-table td:nth-child(1),
+.planet-table td:nth-child(2) {
+  background-color: #D1E3FF;
+  font-weight: bold;
+}
+
+.planet-table td:nth-child(n+3) {
+  background-color: #F2F7FF;
+}
