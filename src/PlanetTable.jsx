@@ -1,6 +1,6 @@
-import './table.css';
+import "./Table.css";
 
-function App() {
+export default function PlanetTable() {
   return (
     <div className="App">
       <h1>Table Component</h1>
@@ -18,7 +18,9 @@ function App() {
         </thead>
         <tbody>
           <tr>
-            <td colSpan={2} rowSpan={4}>Terrestial Planets</td>
+            <td colSpan={2} rowSpan={4}>
+              Terrestial Planets
+            </td>
             <td>Mercury</td>
             <td>0.330</td>
             <td>4,878</td>
