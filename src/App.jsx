@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import Navbar from "./components/Navbar";
-import "./App.css";
+import About from "./components/About";
+import "./styles/App.css";
 
 function App() {
   // const planetSectionRef = useRef(null);
@@ -17,6 +18,7 @@ function App() {
     <>
       <Navbar scrollToForm={scrollToForm} />
       {/* <Hero scrollToPlanet={scrollToPlanet} scrollToForm={scrollToForm} /> */}
+      <About />
     </>
   );
 }
