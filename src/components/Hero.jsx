@@ -31,7 +31,6 @@ export default function Hero({ scrollToPlanets, scrollToForm }) {
           <div className="planet-glow"></div>
           <img
             src={earthImg}
-            // src="https://www.usgs.gov/media/images/earth-image-space"
             alt="Earth from space"
             className="hero-planet-img"
           />
