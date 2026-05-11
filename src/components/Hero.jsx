@@ -1,4 +1,5 @@
 import "./Hero.css";
+import earthImg from "../assets/NASA_Earth.jpg";
 
 export default function Hero({ scrollToPlanets, scrollToForm }) {
   return (
@@ -29,7 +30,8 @@ export default function Hero({ scrollToPlanets, scrollToForm }) {
         <div className="hero-visual">
           <div className="planet-glow"></div>
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/1200px-The_Earth_seen_from_Apollo_17.jpg"
+            src={earthImg}
+            // src="https://www.usgs.gov/media/images/earth-image-space"
             alt="Earth from space"
             className="hero-planet-img"
           />

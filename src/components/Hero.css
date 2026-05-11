@@ -20,6 +20,13 @@
   overflow: hidden;
 }
 
+/* .hero-planet-img {
+  width: 200px;
+  height: 200px;
+  border-color: none;
+  background-color: none;
+} */
+
 .hero-stars {
   position: absolute;
   inset: 0;
@@ -282,8 +289,8 @@
   }
 
   .hero-planet-img {
-    width: 240px;
-    height: 240px;
+    width: 200px;
+    height: 200px;
   }
 
   .planet-glow {
