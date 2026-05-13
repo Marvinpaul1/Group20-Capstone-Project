@@ -4,7 +4,7 @@ import About from "./components/About";
 import "./styles/App.css";
 import Hero from "./components/Hero";
 import PlanetGallery from "./components/PlanetGallery";
-import "./App.css";
+import "./styles/App.css";
 
 function App() {
   const planetSectionRef = useRef(null);
@@ -20,10 +20,8 @@ function App() {
   return (
     <>
       <Navbar scrollToForm={scrollToForm} />
-       <Hero scrollToPlanet={scrollToPlanet} scrollToForm={scrollToForm} />
-      <About />
       <Hero scrollToPlanet={scrollToPlanet} scrollToForm={scrollToForm} />
-       <Hero scrollToPlanet={scrollToPlanet} scrollToForm={scrollToForm} /> 
+      <About />
       <div ref={planetSectionRef}>
         <PlanetGallery />
       </div>
