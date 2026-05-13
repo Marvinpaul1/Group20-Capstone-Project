@@ -1,68 +1,19 @@
 import { useState, useEffect } from "react";
+import { fetchPlanets } from "../services/api";
 import "../styles/PlanetGallery.css";
 
-const PLANETS_API = [
-  {
-    planet: "Mercury",
-    distanceFromSun: 57.9,
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Mercury_in_true_color.jpg/800px-Mercury_in_true_color.jpg",
-  },
-  {
-    planet: "Venus",
-    distanceFromSun: 108.2,
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Venus-real_color.jpg/800px-Venus-real_color.jpg",
-  },
-  {
-    planet: "Earth",
-    distanceFromSun: 149.6,
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/800px-The_Earth_seen_from_Apollo_17.jpg",
-  },
-  {
-    planet: "Mars",
-    distanceFromSun: 227.9,
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/800px-OSIRIS_Mars_true_color.jpg",
-  },
-  {
-    planet: "Jupiter",
-    distanceFromSun: 778.6,
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Jupiter_and_its_shrunken_Great_Red_Spot.jpg/800px-Jupiter_and_its_shrunken_Great_Red_Spot.jpg",
-  },
-  {
-    planet: "Saturn",
-    distanceFromSun: 1433.5,
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Saturn_during_Equinox.jpg/800px-Saturn_during_Equinox.jpg",
-  },
-  {
-    planet: "Uranus",
-    distanceFromSun: 2872.5,
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Uranus2.jpg/800px-Uranus2.jpg",
-  },
-  {
-    planet: "Neptune",
-    distanceFromSun: 4495.1,
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg/800px-Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg",
-  },
-  {
-    planet: "Pluto",
-    distanceFromSun: 5906.4,
-    image:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Pluto_in_True_Color_-_High-Res.jpg/800px-Pluto_in_True_Color_-_High-Res.jpg",
-  },
-];
-
-function PlanetCard({ planet, distanceFromSun, image }) {
+function PlanetCard({ planet, distanceFromSun, image, fallbackImage }) {
   return (
     <figure className="planet-card">
       <div className="planet-card-img-wrap">
-        <img src={image} alt={planet} loading="lazy" />
+        <img
+          src={image}
+          alt={planet}
+          loading="lazy"
+          onError={(e) => {
+            e.currentTarget.src = fallbackImage;
+          }}
+        />
         <div className="planet-card-overlay"></div>
       </div>
       <figcaption className="planet-card-info">
@@ -81,22 +32,18 @@ function PlanetCard({ planet, distanceFromSun, image }) {
 export default function PlanetGallery() {
   const [planets, setPlanets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const setError = useState(null);
+  const [error, setError] = useState(null); // ✅ both state and setter
 
   useEffect(() => {
-    fetch("https://api.le-systeme-solaire.net/rest/bodies/", {
-      headers: {
-        Authorization: "Bearer zqNJ0qzhcEMnTm9koAnAXU00casL8SwXUB0fCwSC",
-      },
-    })
-      .then((res) => res.json())
-      .setTimeout(() => {
-        setPlanets(PLANETS_API);
-        setLoading(false);
-      }, 600)
+    fetchPlanets() // ✅ use the actual service
+      .then((data) => {
+        setPlanets(data);
+      })
       .catch((err) => {
         setError(err.message);
-        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false); // ✅ always stop loading
       });
   }, []);
 
@@ -116,6 +63,10 @@ export default function PlanetGallery() {
           <div className="gallery-loading">
             <div className="loading-ring"></div>
             <p>Fetching planetary data...</p>
+          </div>
+        ) : error ? ( // ✅ handle error state in the UI
+          <div className="gallery-error">
+            <p>Failed to load planets: {error}</p>
           </div>
         ) : (
           <div className="planets-grid">
