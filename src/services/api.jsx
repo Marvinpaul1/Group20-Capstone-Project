@@ -1,7 +1,20 @@
-export const fetchPlanets = async () => {
-  const fallbackImage =
-    "https://commons.wikimedia.org/wiki/Special:FilePath/Solar%20System%20true%20color%20(planets%20only).jpg?width=900";
+import { useState } from "react";
+import fallback from "../assets/fallback_img.jpg";
 
+// ✅ Proper React component, defined outside the async function
+export const PlanetImage = ({ src }) => {
+  const [imgSrc, setImgSrc] = useState(src);
+
+  return (
+    <img
+      src={imgSrc}
+      onError={() => setImgSrc(fallback)} // ✅ Use the imported fallback jpg, not a component
+      alt="Planet-Image"
+    />
+  );
+};
+
+export const fetchPlanets = async () => {
   const wikiPageByPlanet = {
     Earth: "Earth",
     Mars: "Mars",
@@ -18,7 +31,7 @@ export const fetchPlanets = async () => {
     const page = wikiPageByPlanet[planetName];
 
     if (!page) {
-      return fallbackImage;
+      return fallback; // ✅ Return the imported fallback jpg string
     }
 
     try {
@@ -31,12 +44,10 @@ export const fetchPlanets = async () => {
       }
 
       const data = await res.json();
-      return (
-        data.thumbnail?.source || data.originalimage?.source || fallbackImage
-      );
+      return data.thumbnail?.source || data.originalimage?.source || fallback; // ✅ fallback jpg
     } catch (err) {
       console.error(err);
-      return fallbackImage;
+      return fallback; // ✅ fallback jpg
     }
   };
 
@@ -50,7 +61,7 @@ export const fetchPlanets = async () => {
           planet: planetName,
           distanceFromSun: planet.distanceFromSun || planet.distance,
           image: await fetchWikipediaImage(planetName),
-          fallbackImage,
+          fallbackImage: fallback, // ✅ Use imported fallback, not the shadowed const
         };
       }),
     );
@@ -67,8 +78,8 @@ export const fetchPlanets = async () => {
   } catch (err) {
     console.error(err);
 
-    const fallback = await fetch("/planets.json");
-    const planets = await fallback.json();
+    const fallbackRes = await fetch("/planets.json"); // ✅ Renamed to avoid shadowing the import
+    const planets = await fallbackRes.json();
     return normalizePlanets(planets);
   }
 };
