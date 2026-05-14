@@ -21,7 +21,6 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
-  /* table-layout: fixed; */
 }
 
 .planet-table thead tr {
@@ -37,6 +36,7 @@
   color: #fff;
   font-weight: 600;
   white-space: nowrap;
+  border-right: 1px solid var(--color-border);
 }
 
 .planet-table tbody tr {
@@ -56,6 +56,7 @@
   padding: 12px 16px;
   color: var(--color-text);
   vertical-align: middle;
+  border: 1px solid var(--color-border);
 }
 
 .group-cell {
@@ -68,16 +69,6 @@
   border-right: 1px solid var(--color-border);
   white-space: nowrap;
   width: 120px;
-}
-
-.subgroup-cell {
-  background: var(--color-surface);
-  font-size: 0.75rem;
-  color: var(--color-text-muted) !important;
-  text-align: center;
-  border-right: 1px solid var(--color-border);
-  font-style: italic;
-  width: 110px;
 }
 
 .planet-name-cell {
