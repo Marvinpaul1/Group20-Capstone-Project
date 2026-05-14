@@ -24,6 +24,8 @@ function App() {
       <About />
       <div ref={planetSectionRef}>
         <PlanetGallery />
+      </div>
+      <div ref={formSectionRef}>
         <ContactForm />
       </div>
     </>
