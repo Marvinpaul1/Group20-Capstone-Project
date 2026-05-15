@@ -18,6 +18,9 @@ export default function ContactForm() {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const [status, setStatus] = useState({ type: "", message: "" });
 
   const validate = () => {
     const e = {};
@@ -29,10 +32,14 @@ export default function ContactForm() {
     }
     if (!form.phone.trim()) {
       e.phone = "Phone number is required.";
-    } else if (!/^\+?[\d\s\-()]{7,}$/.test(form.phone)) {
+    } else if (!/^\+?\d{7,15}$/.test(form.phone.replace(/[\s\-()]/g, ""))) {
       e.phone = "Enter a valid phone number.";
     }
-    if (!form.message.trim()) e.message = "Message is required.";
+    if (!form.message.trim()) {
+      e.message = "Message is required.";
+    } else if (form.message.length > 100) {
+      e.message = "Message must be under 100 characters.";
+    }
     return e;
   };
 
@@ -57,21 +64,42 @@ export default function ContactForm() {
       setErrors(e);
       return;
     }
+
     setSubmitting(true);
+    setStatus({ type: "", message: "" });
+
     try {
-      await fetch(SUBMIT_URL, {
+      const response = await fetch(SUBMIT_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-    } catch (_) {
-      // proceed even on network error for demo
+
+      if (!response.ok) {
+        throw new Error(`Form submission failed: ${response.status}`);
+      }
+
+      setForm(initialState);
+      setSubmitSuccess(true);
+      setStatus({
+        type: "success",
+        message: "Your message has been submitted successfully.",
+      });
+
+      setSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      setStatus({
+        type: "error",
+        message:
+          "Something went wrong. Please check your details and try again.",
+      });
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
-    setSubmitted(true);
   };
 
-  if (submitted) {
+  if (submitted && submitSuccess) {
     return (
       <section className="form-section">
         <div className="container">
@@ -83,7 +111,9 @@ export default function ContactForm() {
               className="btn-primary"
               onClick={() => {
                 setSubmitted(false);
+                setSubmitSuccess(false);
                 setForm(initialState);
+                setStatus({ type: "", message: "" });
               }}
             >
               Send Another
@@ -110,6 +140,16 @@ export default function ContactForm() {
           </p>
         </div>
 
+        {status.message && (
+          <div
+            className={`status-banner status-${status.type}`}
+            role="alert"
+            aria-live="polite"
+          >
+            {status.message}
+          </div>
+        )}
+
         <div className="form-grid">
           {/* Row 1 */}
           <div className="form-group">
@@ -124,11 +164,15 @@ export default function ContactForm() {
               value={form.fullName}
               onChange={handleChange}
               className={errors.fullName ? "error" : ""}
+              aria-describedby="err-fullName"
             />
             {errors.fullName && (
-              <span className="error-msg">{errors.fullName}</span>
+              <span id="err-fullName" className="error-msg" role="alert">
+                {errors.fullName}
+              </span>
             )}
           </div>
+
           <div className="form-group">
             <label htmlFor="email">
               Email <span className="required">*</span>
@@ -141,8 +185,13 @@ export default function ContactForm() {
               value={form.email}
               onChange={handleChange}
               className={errors.email ? "error" : ""}
+              aria-describedby="err-email"
             />
-            {errors.email && <span className="error-msg">{errors.email}</span>}
+            {errors.email && (
+              <span id="err-email" className="error-msg" role="alert">
+                {errors.email}
+              </span>
+            )}
           </div>
 
           {/* Row 2 */}
@@ -162,6 +211,7 @@ export default function ContactForm() {
               <option>Other</option>
             </select>
           </div>
+
           <div className="form-group">
             <label htmlFor="phone">
               Phone Number <span className="required">*</span>
@@ -170,12 +220,17 @@ export default function ContactForm() {
               id="phone"
               name="phone"
               type="tel"
-              placeholder="Please enter a valid phone number"
+              placeholder="+234 800 000 0000"
               value={form.phone}
               onChange={handleChange}
               className={errors.phone ? "error" : ""}
+              aria-describedby="err-phone"
             />
-            {errors.phone && <span className="error-msg">{errors.phone}</span>}
+            {errors.phone && (
+              <span id="err-phone" className="error-msg" role="alert">
+                {errors.phone}
+              </span>
+            )}
           </div>
 
           {/* Row 3 */}
@@ -192,13 +247,18 @@ export default function ContactForm() {
               value={form.message}
               onChange={handleChange}
               className={errors.message ? "error" : ""}
+              aria-describedby="err-message"
             />
-            <span className="char-count">
-              {form.message.length}/100 characters
-            </span>
-            {errors.message && (
-              <span className="error-msg">{errors.message}</span>
-            )}
+            <div className="char-row">
+              {errors.message && (
+                <span id="err-message" className="error-msg" role="alert">
+                  {errors.message}
+                </span>
+              )}
+              <span className="char-count">
+                {form.message.length}/100 characters
+              </span>
+            </div>
           </div>
 
           {/* Row 4: Contact preference + Source */}
@@ -219,6 +279,7 @@ export default function ContactForm() {
               ))}
             </div>
           </div>
+
           <div className="form-group">
             <label>How did you hear about us?</label>
             <div className="checkbox-group">
