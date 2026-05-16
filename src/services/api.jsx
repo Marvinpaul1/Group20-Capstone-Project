@@ -1,18 +1,4 @@
-import { useState } from "react";
-import fallback from "../assets/fallback_img.jpg";
-
-// ✅ Proper React component, defined outside the async function
-export const PlanetImage = ({ src }) => {
-  const [imgSrc, setImgSrc] = useState(src);
-
-  return (
-    <img
-      src={imgSrc}
-      onError={() => setImgSrc(fallback)} // ✅ Use the imported fallback jpg, not a component
-      alt="Planet-Image"
-    />
-  );
-};
+const FALLBACK_IMAGE = "/images/fallback_img.jpg";
 
 export const fetchPlanets = async () => {
   const wikiPageByPlanet = {
@@ -31,7 +17,7 @@ export const fetchPlanets = async () => {
     const page = wikiPageByPlanet[planetName];
 
     if (!page) {
-      return fallback; // ✅ Return the imported fallback jpg string
+      return FALLBACK_IMAGE;
     }
 
     try {
@@ -44,10 +30,12 @@ export const fetchPlanets = async () => {
       }
 
       const data = await res.json();
-      return data.thumbnail?.source || data.originalimage?.source || fallback; // ✅ fallback jpg
+      return (
+        data.thumbnail?.source || data.originalimage?.source || FALLBACK_IMAGE
+      );
     } catch (err) {
       console.error(err);
-      return fallback; // ✅ fallback jpg
+      return FALLBACK_IMAGE;
     }
   };
 
@@ -61,7 +49,7 @@ export const fetchPlanets = async () => {
           planet: planetName,
           distanceFromSun: planet.distanceFromSun || planet.distance,
           image: await fetchWikipediaImage(planetName),
-          fallbackImage: fallback, // ✅ Use imported fallback, not the shadowed const
+          fallbackImage: FALLBACK_IMAGE,
         };
       }),
     );
@@ -76,10 +64,18 @@ export const fetchPlanets = async () => {
     const planets = await res.json();
     return normalizePlanets(planets);
   } catch (err) {
-    console.error(err);
-
-    const fallbackRes = await fetch("/planets.json"); // ✅ Renamed to avoid shadowing the import
-    const planets = await fallbackRes.json();
-    return normalizePlanets(planets);
+    console.error("Primary fetch failed:", err);
+    try {
+      const fallbackRes = await fetch("/planets.json");
+      if (!fallbackRes.ok) {
+        throw new Error(
+          `Local fallback also failed (${fallbackRes.status}). Make sure planets.json is in /public.`,
+        );
+      }
+      const planets = await fallbackRes.json();
+      return normalizePlanets(planets);
+    } catch (fallbackErr) {
+      throw new Error(fallbackErr.message);
+    }
   }
 };
