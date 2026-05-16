@@ -18,7 +18,7 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Group 20
+            Designed By Group 20 Novara Cohot
           </a>
           <a href="#">Privacy &amp; Policy</a>
           <a href="#">Terms &amp; Condition</a>

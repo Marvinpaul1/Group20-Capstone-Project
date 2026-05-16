@@ -5,7 +5,7 @@ import Hero from "./components/Hero";
 import PlanetGallery from "./components/PlanetGallery";
 import PlanetTable from "./components/PlanetTable";
 import ContactForm from "./components/ContactForm";
-import Footer from "./Components/Footer";
+import Footer from "./components/Footer";
 import "./styles/App.css";
 
 function App() {
