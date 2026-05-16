@@ -5,6 +5,7 @@ import "./styles/App.css";
 import Hero from "./components/Hero";
 import PlanetGallery from "./components/PlanetGallery";
 import ContactForm from "./components/ContactForm";
+import Footer from "./Components/Footer";
 
 function App() {
   const planetSectionRef = useRef(null);
@@ -28,6 +29,7 @@ function App() {
       <div ref={formSectionRef}>
         <ContactForm />
       </div>
+      <Footer />
     </>
   );
 }
