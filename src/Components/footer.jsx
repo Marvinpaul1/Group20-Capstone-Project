@@ -27,7 +27,7 @@ export default function Footer() {
       <div className="footer-bottom container">
         ©2026{" "}
         <p>
-          Built by Paul, Mmasi, Amaka, Ifeoma, Zion, Ansela, and Theophilus...
+          Built by Paul, Mmasi, Ansela, Amaka, Ifeoma, Theophilus, and Zion...
           All rights reserved.
         </p>
         <a
