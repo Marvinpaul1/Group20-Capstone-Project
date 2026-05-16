@@ -1,5 +1,5 @@
-import "./Hero.css";
 import earthImg from "../assets/NASA_Earth.jpg";
+import "./Hero.css";
 
 export default function Hero({ scrollToPlanets, scrollToForm }) {
   return (
