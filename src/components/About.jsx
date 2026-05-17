@@ -7,7 +7,7 @@ export default function About() {
         <div className="about-section-container">
           <div className="video-wrapper">
             <video className="about-video" autoPlay muted loop playsInline>
-              <source src="/videos/satalite.mp4" type="video/mp4" />
+              <source src="./videos/satalite.mp4" type="video/mp4" />
               Your browser does not support video.
             </video>
           </div>
