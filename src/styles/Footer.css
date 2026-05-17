@@ -8,7 +8,6 @@
   display: flex;
   justify-content: space-between;
   gap: 40px;
-  margin-bottom: 40px;
   flex-wrap: wrap;
 }
 
@@ -25,6 +24,7 @@
   font-size: 0.85rem;
   max-width: 340px;
   line-height: 1.7;
+  margin-bottom: 10px;
 }
 
 .footer-links {
@@ -36,7 +36,7 @@
 
 .footer-links a {
   color: var(--color-text-muted);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   transition: color 0.2s;
 }
 

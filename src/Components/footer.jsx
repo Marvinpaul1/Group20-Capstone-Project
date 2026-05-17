@@ -18,7 +18,7 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Group 20
+            Designed By Group 20 Novara Cohot
           </a>
           <a href="#">Privacy &amp; Policy</a>
           <a href="#">Terms &amp; Condition</a>
@@ -27,7 +27,7 @@ export default function Footer() {
       <div className="footer-bottom container">
         ©2026{" "}
         <p>
-          Built by Mmasi, Amaka, Ifeoma, Theophilus, Zion, Ansela, and Paul...
+          Built by Paul, Mmasi, Ansela, Amaka, Ifeoma, Theophilus, and Zion...
           All rights reserved.
         </p>
         <a
