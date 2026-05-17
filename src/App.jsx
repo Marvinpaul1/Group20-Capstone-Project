@@ -1,10 +1,12 @@
 import { useRef } from "react";
 import Navbar from "./components/Navbar";
 import About from "./components/About";
-import "./styles/App.css";
 import Hero from "./components/Hero";
 import PlanetGallery from "./components/PlanetGallery";
+import PlanetTable from "./components/PlanetTable";
 import ContactForm from "./components/ContactForm";
+import Footer from "./components/Footer";
+import "./styles/App.css";
 
 function App() {
   const planetSectionRef = useRef(null);
@@ -17,6 +19,7 @@ function App() {
   const scrollToForm = () => {
     formSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   return (
     <>
       <Navbar scrollToForm={scrollToForm} />
@@ -25,9 +28,11 @@ function App() {
       <div ref={planetSectionRef}>
         <PlanetGallery />
       </div>
+      <PlanetTable />
       <div ref={formSectionRef}>
         <ContactForm />
       </div>
+      <Footer />
     </>
   );
 }
